@@ -163,7 +163,7 @@ searchInput.focus();
 // Append all the fruit to load dynamically.
 for (const fruit of fruits) {
   fruitList.innerHTML += `
-    <li>${fruit}</li>
+    <li>${fruit.toLowerCase()}</li>
   `;
 }
 
@@ -173,13 +173,22 @@ searchInput.addEventListener("keyup", function () {
   const query = this.value.toLowerCase().trim();
 
   for (const child of fruitList.children) {
+    /** @type {string} */
     const fruitName = child.innerText;
-    const matchFound = fruitName.toLowerCase().includes(query);
+    const matchFound = fruitName.includes(query);
 
     // Display or hide the item, if the query matches the fruit name.
     if (matchFound) {
       child.style.display = "list-item";
       matchesFound += 1;
+
+      // Clear the formatting of the node.
+      child.innerHTML = child.innerText;
+      // Reformat the node to emphasize where the query matched.
+      child.innerHTML = child.innerHTML.replace(
+        query,
+        `<span class="bg-warning">${query}</span>`
+      );
     } else {
       child.style.display = "none";
     }
